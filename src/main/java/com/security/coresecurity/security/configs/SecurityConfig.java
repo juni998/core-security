@@ -1,5 +1,6 @@
 package com.security.coresecurity.security.configs;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,7 @@ public class SecurityConfig {
 
         String password = passwordEncoder().encode("1111");
 
+
         UserDetails user = User.builder()
                 .username("user")
                 .password(password).roles("USER")
@@ -32,6 +34,7 @@ public class SecurityConfig {
                 .username("admin")
                 .password(password).roles("ADMIN")
                 .build();
+
         return new InMemoryUserDetailsManager(user, manager, admin);
     }
 
@@ -40,16 +43,17 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    /* Web ignore 설정*/
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/resources/**");
+        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/","/user").permitAll()
                 .antMatchers("/mypage").hasRole("USER")
                 .antMatchers("/messages").hasRole("MANAGER")
                 .antMatchers("/config").hasRole("ADMIN")
