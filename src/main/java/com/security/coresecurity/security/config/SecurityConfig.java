@@ -1,4 +1,4 @@
-package com.security.coresecurity.security.configs;
+package com.security.coresecurity.security.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +53,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/","/user").permitAll()
+                .antMatchers("/","/users").permitAll()
                 .antMatchers("/mypage").hasRole("USER")
                 .antMatchers("/messages").hasRole("MANAGER")
                 .antMatchers("/config").hasRole("ADMIN")
@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .formLogin();
 
         return http.build();
+
 
 
     }
