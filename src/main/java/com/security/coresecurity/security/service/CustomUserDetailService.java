@@ -21,7 +21,7 @@ public class CustomUserDetailService implements UserDetailsService {
     private UserRepository userRepository;
 
 
-    @Bean
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Account account = userRepository.findByUsername(username);
@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("UsernameNotFoundException");
         }
 
-        ArrayList<GrantedAuthority> roles = new ArrayList<>();
+        List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(account.getRole()));
 
         AccountContext accountContext = new AccountContext(account, roles);
