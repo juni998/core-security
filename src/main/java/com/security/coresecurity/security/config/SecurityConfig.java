@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(final HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/users").permitAll() //권한 없어도 접속 가능, (홈, 로그인, 회원가입)
@@ -66,7 +66,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/config").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http
-                .formLogin();
+                .formLogin()
+                //로그인 커스텀
+                .loginPage("/login")
+                .loginProcessingUrl("/login_proc")
+                .defaultSuccessUrl("/") //성공시 이동할 페이지
+                .permitAll(); //권한On
+
 
     }
 }
