@@ -27,9 +27,12 @@ public class CustomUserDetailService implements UserDetailsService {
         Account account = userRepository.findByUsername(username);
 
         if (account == null) {
+            //인증실패 예외
             throw new UsernameNotFoundException("UsernameNotFoundException");
         }
 
+
+        //권한 정보 생성
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(account.getRole()));
 
